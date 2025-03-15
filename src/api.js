@@ -2,7 +2,7 @@ import axios from 'axios'
 import { data } from 'react-router-dom';
 
 const API = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'https://projectbe-final.onrender.com',
     headers: {
         'Content-Type': 'application/json'
     }
