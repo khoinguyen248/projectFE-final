@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './Signin.css';
 import logo from './logo.png';
 import dashboard from './dashboard.png';
 import { FaEye, FaRegEyeSlash } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { signin } from './api';
+import { StoreContext } from './store';
 
 const Signin = () => {
 
@@ -29,7 +30,8 @@ const Signin = () => {
     }
 
     const [password, setPassword] = useState("")
-    
+    const store = useContext(StoreContext)
+    const{setAccount, accountt} = store
 
     
 
@@ -45,7 +47,10 @@ const handleSubmit = async (e) => {
                    
                     localStorage.setItem("tokenBackend", response.data.token);
                     localStorage.setItem("email", response.data.account.email)
+                    localStorage.setItem('account', JSON.stringify(response.data.account));
 
+                    setAccount(response.data.account)
+                    console.log(accountt)
                     navigate("/Homepage")
 
                     

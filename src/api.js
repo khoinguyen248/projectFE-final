@@ -2,19 +2,19 @@ import axios from 'axios'
 import { data } from 'react-router-dom';
 
 const API = axios.create({
-    baseURL: 'https://projectbe-final.onrender.com',
+    baseURL: 'http://localhost:8080',
     headers: {
         'Content-Type': 'application/json'
     }
 })
 
-API.interceptors.request.use((req) => {
-    const token = localStorage.getItem("token"); // Lưu token khi đăng nhập
-    if (token) {
-        req.headers.Authorization = `Bearer ${token}`;
-    }
-    return req;
-});
+// API.interceptors.request.use((req) => {
+//     const token = localStorage.getItem("token"); // Lưu token khi đăng nhập
+//     if (token) {
+//         req.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return req;
+// });
 
 export const getAllemloyees = () => API.get('/employees/allemployees')
 export const signup = (data) => API.post('/account/signup', data)
@@ -23,3 +23,7 @@ export const getInfors = (email) => API.get(`/account/profile?email=${email}`)
 export const jobs = () => API.get('/jobs/alljobs')
 export const updateJobs = (data4) => API.post('/jobs/updateJobs', data4)
 export const addEmployee = (data5) => API.post('/employees/addemployee', data5)
+export const deleteUser = (data6) => 
+  API.delete('/employees/deleteUser', {
+    data: data6,  // ⚠️ bắt buộc
+  });

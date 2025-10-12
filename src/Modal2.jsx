@@ -1,26 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { IoCloseSharp } from "react-icons/io5";
+import { StoreContext } from './store';
+import { deleteUser } from './api';
 
 export const Modal2 = ({ setHooks, user, fetchOne }) => {
 
 
-
-    const handleDeleteProduct = (id) => {
-
+    const store = useContext(StoreContext)
+    const {accountt} = store
+    const handleDeleteProduct = async () => {
+    
         try {
-            fetch(`https://671c5ff22c842d92c382ba18.mockapi.io/mindxpro/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => response.json())
-                .then(data => {
-
-                    fetchOne()
-                });
+          const deleteItem = {email: accountt?.email, role: accountt?.role, name: user?.name, employeeEmail: user?.email}
+          console.log(deleteItem) 
+          await deleteUser(deleteItem)
         } catch (error) {
-            console.log(error
-            )
+     console.error('delete error', error.response?.status, error.response?.data || error.message);
+
         }
     };
     return (
@@ -45,7 +41,7 @@ export const Modal2 = ({ setHooks, user, fetchOne }) => {
                     padding: '20px', width: '40%', margin: 'auto', border: 'none', borderRadius: '10px', backgroundColor: 'red', fontFamily: 'lexend', fontSize: '16px', fontWeight: '300', lineHeight: '24px', color: 'yellow', cursor: 'pointer', display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                }} onClick={() => handleDeleteProduct(user)}>Yes</button>
+                }} onClick={() => handleDeleteProduct()}>Yes</button>
 
                 <button style={{
                     padding: '20px', width: '40%', margin: 'auto', border: 'none', borderRadius: '10px', backgroundColor: 'rgba(113, 82, 243, 1)', fontFamily: 'lexend', fontSize: '16px', fontWeight: '300', lineHeight: '24px', color: 'white', cursor: 'pointer', display: 'flex',

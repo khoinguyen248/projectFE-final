@@ -15,7 +15,6 @@ const Signup = () => {
     const [password, setPassword] = useState('')
     const [role, setRole] = useState('')
     const [pass, setPass] = useState(true)
-
     const[errstr, setErrstr] = useState('')
     const [missInf, setMissInf] = useState(true)
     const navigate = useNavigate()
@@ -30,7 +29,7 @@ const Signup = () => {
         try {
            
             
-                const response = await signup(newaccount);
+            const response = await signup(newaccount);
             console.log(response.data);
             alert('Account created !')
             navigate("/signin")

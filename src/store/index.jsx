@@ -1,23 +1,34 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const StoreContext = createContext({
     setCurrentPage(currentPage) { },
     
     setListWorkers(listWorkers) {},
-    setPerson(person) {}
+    setPerson(person) {},
+    setAccount(accountt) {}
 });
 
 const StoreProvider = ({ children }) => {
     // thuc hien cac chuc nang filter 
     const [currentPage, setCurrentPage] = useState(null);
     const [person, setPerson] = useState({});
-    // truyền state và dispatch xuống dưới
+    const [accountt, setAccount] = useState(() => {
+    const stored = localStorage.getItem('account');
+    return stored ? JSON.parse(stored) : {};
+  });
+
+  useEffect(() => {
+    if (accountt && Object.keys(accountt).length > 0) {
+      localStorage.setItem('account', JSON.stringify(accountt));
+    }
+  }, [accountt]);
     const [listWorkers, setListWorkers] = useState([]);
     return <StoreContext.Provider value={
         {
             currentPage,
             person,
             listWorkers,
+            accountt,
             setCurrentPage: (currentPage) => {
                 setCurrentPage(currentPage);
             },
@@ -28,6 +39,9 @@ const StoreProvider = ({ children }) => {
             
             setPerson: (person) => {
                 setPerson(person);
+            },
+            setAccount: (accountt) =>{
+                setAccount(accountt)
             }
         }
     }>{children}</StoreContext.Provider>;

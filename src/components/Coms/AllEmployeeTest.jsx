@@ -27,11 +27,12 @@ const AllEmployee = () => {
     setList(int)
     setButt(int)
   }
-  const { setPerson } = store
+  const { setPerson, accountt } = store
   const [listWorkers, setListWorkers] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+ 
   // const { listWorkers } = store
-
+//moi khi ma onclick thi hien giao dien, hoac la reload hien giao hien 
   const fetchOne = async () => {
     try {
       setIsLoading(true)
@@ -228,7 +229,7 @@ const AllEmployee = () => {
                     height: '30px'
 
                   }}>
-                    <img src={item.img} alt="" style={{
+                    <img src={`/img2/${item.name}.png`} alt="" style={{
                       height: '30px',
                       width: '30px',
                       borderRadius: '50%'
@@ -276,11 +277,18 @@ const AllEmployee = () => {
                     <IoEyeOutline size={22} style={{ cursor: 'pointer' }} onClick={() => {
                       setPerson(item)
                       navigate(`/Homepage/Allemployee/${item.name} `)
+                      
 
                     }} />
                     <FaRegTrashAlt size={22} onClick={() => {
+                      if(accountt?.role==='MANAGER'){
+                        console.log(accountt)
                       setHooks(true)
-                      setUser(item.id)
+                      setUser(item)
+                      }else{
+                        alert('Unauthorized request !')
+                      }
+                     
                     }}/>
                     <FaPenToSquare size={22} />
                   </div>
@@ -360,8 +368,13 @@ const AllEmployee = () => {
 
                     }} />
                     <FaRegTrashAlt size={22} onClick={() => {
+                     if(accountt?.role==='MANAGER'){
+                        console.log(accountt)
                       setHooks(true)
-                      setUser(item.id)
+                      setUser(item)
+                      }else{
+                        alert('Unauthorized request !')
+                      }
                     }}/>
                     <FaPenToSquare size={22} />
                   </div>
@@ -440,8 +453,13 @@ const AllEmployee = () => {
 
                     }} />
                     <FaRegTrashAlt size={22} onClick={() => {
+                     if(accountt?.role==='MANAGER'){
+                        console.log(accountt)
                       setHooks(true)
-                      setUser(item.id)
+                      setUser(item)
+                      }else{
+                        alert('Unauthorized request !')
+                      }
                     }}/>
                     <FaPenToSquare size={22} />
                   </div>
@@ -521,8 +539,13 @@ const AllEmployee = () => {
 
                     }} />
                    <FaRegTrashAlt size={22} onClick={() => {
+                     if(accountt?.role==='MANAGER'){
+                        console.log(accountt)
                       setHooks(true)
-                      setUser(item.id)
+                      setUser(item)
+                      }else{
+                        alert('Unauthorized request !')
+                      }
                     }}/>
                     <FaPenToSquare size={22} />
                   </div>
@@ -602,8 +625,13 @@ const AllEmployee = () => {
 
                     }} />
                     <FaRegTrashAlt size={22} onClick={() => {
+                     if(accountt?.role==='MANAGER'){
+                      console.log(accountt)
                       setHooks(true)
-                      setUser(item.id)
+                      setUser(item)
+                      }else{
+                        alert('Unauthorized request !')
+                      }
                     }}/>
                     <FaPenToSquare size={22} />
                   </div>

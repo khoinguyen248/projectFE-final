@@ -91,7 +91,7 @@ const PersonalInf = () => {
               <div className="searchbar1" style={{
                 width: '324px', height: '100px', display: 'flex', gap: '20px'
               }}>
-                <img src={person.img} style={{
+                <img src={`/img2/${person.name}.png`} style={{
                   height: '100%',
                   width: '90px',
                   borderRadius: '10px'
