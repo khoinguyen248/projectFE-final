@@ -1,39 +1,53 @@
-import React, { useEffect } from 'react'
-import { CiSearch } from "react-icons/ci";
-import { CiBellOn } from "react-icons/ci";
-import { IoEyeOutline } from "react-icons/io5";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { FaPenToSquare } from "react-icons/fa6";
-
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { VscSettings } from "react-icons/vsc";
-import { useContext } from 'react';
-import { StoreContext } from '../../store';
-
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import { CiSearch, CiBellOn } from "react-icons/ci";
+import { getTimesheets, checkIn, checkOut } from '../../api';
 
 const Attendance = () => {
 
   const [check, setCheck] = useState(false)
   const [arr, setArr] = useState([])
+  const [role, setRole] = useState('')
 
   const fetchOne = async () => {
     try {
       setCheck(true)
-      const respone = await fetch('https://671c5ff22c842d92c382ba18.mockapi.io/products')
-      const data = await respone.json()
+      const respone = await getTimesheets()
+      const data = respone.data.data
       setArr(data)
       setCheck(false)
     }
     catch {
       console.log('error')
+      setCheck(false)
     }
 
   }
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('account'));
+    if (user) setRole(user.role);
     fetchOne()
   }, [])
+
+  const handleCheckIn = async () => {
+    try {
+      await checkIn({ location: 'Office' });
+      alert('Checked In!');
+      fetchOne();
+    } catch (error) {
+      alert('Check-in failed: ' + (error.response?.data?.message || error.message));
+    }
+  };
+
+  const handleCheckOut = async () => {
+    try {
+      await checkOut();
+      alert('Checked Out!');
+      fetchOne();
+    } catch (error) {
+      alert('Check-out failed: ' + (error.response?.data?.message || error.message));
+    }
+  };
 
   return (
     <div className='cha'>
@@ -65,23 +79,22 @@ const Attendance = () => {
             display: 'flex',
             gap: '12px'
           }}>
-            <input type="text" style={{
-              border: '1px solid rgba(162, 161, 168, 0.1)',
-              paddingLeft: '40px',
-              height: '50px'
-            }} />
-            <label htmlFor="" style={{
-              position: 'absolute',
-              top: '50%',
-              left: '20px',
-              transform: 'translateY(-50%)'
-            }}><CiSearch size={24} />
-            </label>
-            <button style={{
+            <button onClick={handleCheckIn} style={{
               borderRadius: '10px',
-              backgroundColor: 'rgba(162, 161, 168, 0.1)'
-
-            }}><CiBellOn size={24} /></button>
+              backgroundColor: 'green',
+              color: 'white',
+              border: 'none',
+              padding: '0 20px',
+              cursor: 'pointer'
+            }}>Check In</button>
+            <button onClick={handleCheckOut} style={{
+              borderRadius: '10px',
+              backgroundColor: 'orange',
+              color: 'white',
+              border: 'none',
+              padding: '0 20px',
+              cursor: 'pointer'
+            }}>Check Out</button>
           </div>
         </div>
 
@@ -105,10 +118,6 @@ const Attendance = () => {
                 transform: 'translateY(-50%)'
               }}><CiSearch size={24} /></label>
             </div>
-
-
-
-
           </div>
 
           <div className="boxcontent">
@@ -128,11 +137,11 @@ const Attendance = () => {
               <p style={{
                 width: '258px',
                 textAlign: 'left'
-              }}>Designation</p>
+              }}>Department</p>
               <p style={{
                 width: '162px',
                 textAlign: 'left'
-              }}>Type</p>
+              }}>Date</p>
               <p style={{
                 width: '192px',
                 textAlign: 'left'
@@ -149,7 +158,7 @@ const Attendance = () => {
 
             {check && <p style={{ margin: 'auto', color: 'rgba(162, 161, 168, 1)' }}>please wait</p>}
             {!check && arr.length > 0 && arr?.map(item => {
-              return (<> <div key={item.id} style={{ display: "flex" }}>
+              return (<> <div key={item._id} style={{ display: "flex" }}>
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -158,14 +167,7 @@ const Attendance = () => {
                   height: '30px'
 
                 }}>
-
-                  <img src={item.img} style={{
-                    height: '30px',
-                    width: '30px',
-                    borderRadius: '50%'
-                  }} />
-
-                  <p >{item.Name}</p>
+                  <p >{item.employeeId ? `${item.employeeId.fname} ${item.employeeId.lname}` : 'Unknown'}</p>
 
                 </div>
 
@@ -174,24 +176,24 @@ const Attendance = () => {
                   textAlign: 'left',
                   display: 'flex',
                   alignItems: 'center'
-                }}>{item.Designation}</p>
+                }}>{item.employeeId ? item.employeeId.department : '-'}</p>
 
                 <p style={{
                   width: '162px',
                   textAlign: 'left',
                   display: 'flex',
                   alignItems: 'center'
-                }}> {item.Type}</p>
+                }}> {new Date(item.createdAt).toLocaleDateString()}</p>
 
                 <p style={{
                   width: '192px',
                   textAlign: 'left',
                   display: 'flex',
                   alignItems: 'center'
-                }}> {item.CheckTime}</p>
+                }}> {new Date(item.checkIn).toLocaleTimeString()}</p>
                 <p style={{
-                  color: item.Status === "On Time" ? 'rgba(63, 194, 138, 1)' : 'rgba(244, 91, 105, 1)',
-                  backgroundColor: item.Status === "On Time" ? 'rgba(63, 194, 138, 0.1)' : 'rgba(244, 91, 105, 0.1)',
+                  color: item.status === "OnTime" ? 'rgba(63, 194, 138, 1)' : 'rgba(244, 91, 105, 1)',
+                  backgroundColor: item.status === "OnTime" ? 'rgba(63, 194, 138, 0.1)' : 'rgba(244, 91, 105, 0.1)',
                   display: 'flex',
                   alignItems: 'center',
                   padding: '3px 8px',
@@ -199,7 +201,7 @@ const Attendance = () => {
                   borderRadius: '4px'
 
                 }}>
-                  {item.Status}
+                  {item.status || 'Present'}
                 </p>
               </div>
                 <hr style={{ border: "1px solid rgba(162, 161, 168, 0.1)" }} />
@@ -210,18 +212,11 @@ const Attendance = () => {
 
             <div style={{ display: 'flex', width: '100%', justifyContent: 'center', height: '50px', alignItems: 'center' }}
             >
-
-
-              <p style={{ color: 'rgba(162, 161, 168, 1)' }}>Showing 1 to 12 out of 60 records</p>
-
+              <p style={{ color: 'rgba(162, 161, 168, 1)' }}>Showing records</p>
             </div>
           </div>
 
         </div>
-
-
-
-
       </div>
     </div>
   )

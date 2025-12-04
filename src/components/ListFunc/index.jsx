@@ -11,6 +11,11 @@ import { IoPersonAddOutline } from "react-icons/io5";
 import { MdEventNote } from "react-icons/md";
 import { LuCalendarDays } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
+import { MdAttachMoney } from "react-icons/md";
+import { MdAccessTime } from "react-icons/md";
+import { IoCalendarOutline } from "react-icons/io5";
+import { IoNotificationsOutline } from "react-icons/io5";
+import { IoStatsChartOutline } from "react-icons/io5";
 
 import { StoreContext } from '../../store';
 
@@ -24,8 +29,8 @@ export const Button = () => {
     const navigate = useNavigate()
     const { userId } = useParams()
     const store = useContext(StoreContext)
-    const {currentPage ,setCurrentPage} = store
-    
+    const { currentPage, setCurrentPage } = store
+
 
     const handleCheckbut = (int) => {
 
@@ -36,75 +41,78 @@ export const Button = () => {
 
     useEffect(() => {
         setCurrentPage(localStorage.getItem('tokenBackend'))
-    }, 
-[])
+    },
+        [])
 
 
 
     return (
         <>
 
-        {
-            currentPage ?  <div style={{
-                width: '1500px',
-                display: 'flex',
-                justifyContent: 'space-between'
+            {
+                currentPage ? <div style={{
+                    width: '1500px',
+                    display: 'flex',
+                    justifyContent: 'space-between'
 
-            }}>
+                }}>
 
 
-                <div className="parent">
-                    <div className='menu'>
-                        <div onClick={() => navigate(`/Homepage`)} style={{
-                            display: "flex",
-                            alignItems: 'center',
-                            width: '90%',
-                            gap: '10px',
-                            marginBottom: '30px'
-                        }}>
-                            <img src={logo} alt="" style={{ width: "40px", height: "40px" }} />
-                            <p style={{ fontFamily: 'lexend', fontSize: '24px' }}>HRSM</p>
+                    <div className="parent">
+                        <div className='menu'>
+                            <div onClick={() => navigate(`/Homepage`)} style={{
+                                display: "flex",
+                                alignItems: 'center',
+                                width: '90%',
+                                gap: '10px',
+                                marginBottom: '30px'
+                            }}>
+                                <img src={logo} alt="" style={{ width: "40px", height: "40px" }} />
+                                <p style={{ fontFamily: 'lexend', fontSize: '24px' }}>HRSM</p>
+                            </div>
+                            <button className={userId === "Dashboard" ? 'selected' : ''} onClick={() => handleCheckbut("Dashboard")}><RxDashboard />Dashboard</button>
+                            <button className={userId === "Allemployee" ? 'selected' : ''} onClick={() => handleCheckbut("Allemployee")}><BsPersonLinesFill />All employees</button>
+                            <button className={userId === "AllDepartments" ? 'selected' : ''} onClick={() => handleCheckbut("AllDepartments")}><MdOutlineLocalFireDepartment />All departments</button>
+                            <button className={userId === "Attendance" ? 'selected' : ''} onClick={() => handleCheckbut("Attendance")}><GrSchedules />Attendance</button>
+                            <button className={userId === "Payroll" ? 'selected' : ''} onClick={() => handleCheckbut("Payroll")}><CiDollar />Payroll</button>
+                            <button className={userId === "Jobs" ? 'selected' : ''} onClick={() => handleCheckbut("Jobs")}><RxBackpack />Jobs</button>
+                            <button className={userId === "Candidates" ? 'selected' : ''} onClick={() => handleCheckbut("Candidates")}><IoPersonAddOutline />Candidates</button>
+
+                            <button className={userId === "Salary" ? 'selected' : ''} onClick={() => handleCheckbut("Salary")}><MdAttachMoney />Salary</button>
+                            <button className={userId === "Timesheet" ? 'selected' : ''} onClick={() => handleCheckbut("Timesheet")}><MdAccessTime />Timesheet</button>
+                            <button className={userId === "Schedule" ? 'selected' : ''} onClick={() => handleCheckbut("Schedule")}><IoCalendarOutline />Schedule</button>
+                            <button className={userId === "Notification" ? 'selected' : ''} onClick={() => handleCheckbut("Notification")}><IoNotificationsOutline />Notification</button>
+                            <button className={userId === "Predict" ? 'selected' : ''} onClick={() => handleCheckbut("Predict")}><IoStatsChartOutline />Predict</button>
                         </div>
-                        <button className={userId === "Dashboard" ? 'selected' : ''} onClick={() => handleCheckbut("Dashboard")}><RxDashboard />Dashboard</button>
-                        <button className={userId === "Allemployee" ? 'selected' : ''} onClick={() => handleCheckbut("Allemployee")}><BsPersonLinesFill />All employees</button>
-                        <button className={userId === "AllDepartments" ? 'selected' : ''} onClick={() => handleCheckbut("AllDepartments")}><MdOutlineLocalFireDepartment />All departments</button>
-                        <button className={userId === "Attendance" ? 'selected' : ''} onClick={() => handleCheckbut("Attendance")}><GrSchedules />Attendance</button>
-                        <button className={userId === "Payroll" ? 'selected' : ''} onClick={() => handleCheckbut("Payroll")}><CiDollar />Payroll</button>
-                        <button className={userId === "Jobs" ? 'selected' : ''} onClick={() => handleCheckbut("Jobs")}><RxBackpack />Jobs</button>
-                        <button className={userId === "Candidates" ? 'selected' : ''} onClick={() => handleCheckbut("Candidates")}><IoPersonAddOutline />Candidates</button>
-                        <button className={userId === "Leave" ? 'selected' : ''} onClick={() => handleCheckbut("Leave")}><MdEventNote />Leaves</button>
-                        <button className={userId === "Holiday" ? 'selected' : ''} onClick={() => handleCheckbut("Holiday")}><LuCalendarDays />Holidays</button>
-                        <button className={userId === "Setting" ? 'selected' : ''} onClick={() => handleCheckbut("Setting")}><IoSettingsOutline />Setting</button>
+
                     </div>
 
-                </div>
+                    {!userId && <div style={{ width: '82%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', }}>
 
-                {!userId && <div style={{ width: '82%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', }}>
+                        <p style={{
+                            marginBottom: '8px',
+                            fontFamily: 'Lexend',
+                            fontSize: '40px',
+                            fontWeight: '600',
+                            lineHeight: '40px'
+                        }}>Welcome</p>
+                        <p style={{
+                            marginBottom: '30px',
+                            fontFamily: 'lexend',
+                            fontSize: '26px',
+                            lineHeight: '24px',
+                            fontWeight: '300px',
+                            color: 'rgba(162, 161, 168, 1)'
+                        }}>Let's get started</p>
 
-                    <p style={{
-                        marginBottom: '8px',
-                        fontFamily: 'Lexend',
-                        fontSize: '40px',
-                        fontWeight: '600',
-                        lineHeight: '40px'
-                    }}>Welcome</p>
-                    <p style={{
-                        marginBottom: '30px',
-                        fontFamily: 'lexend',
-                        fontSize: '26px',
-                        lineHeight: '24px',
-                        fontWeight: '300px',
-                        color: 'rgba(162, 161, 168, 1)'
-                    }}>Let's get started</p>
+                    </div>}
 
-                </div>}
+                    <Outlet />
+                </div> : <>
+                    <p>HEM VÔ ĐƯỢC NHE</p>
+                </>
+            }
 
-                <Outlet />
-            </div> : <>
-            <p>HEM VÔ ĐƯỢC NHE</p>
-            </>
-        }
-          
 
 
 

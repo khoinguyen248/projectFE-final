@@ -4,13 +4,25 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Signup from './Signup'
 import Signin from './Signin'
-import { BrowserRouter } from 'react-router-dom'
+import Forget from './Forget'
+import { Mainpath } from './components/Coms/Mainpath'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
- 
+
 
   return (
-    <></>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/forgetPass" element={<Forget />} />
+        <Route path="/Homepage" element={<Mainpath />} />
+        <Route path="/Homepage/:userId" element={<Mainpath />} />
+        <Route path="/Homepage/Allemployee/:employeeId" element={<Mainpath />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

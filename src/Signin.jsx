@@ -13,7 +13,7 @@ const Signin = () => {
 
 
 
-    
+
 
 
     const [checkPassword, setCheckPassword] = useState(false)
@@ -23,7 +23,7 @@ const Signin = () => {
     const [errstr, setErrstr] = useState('')
 
     const [email, setMail] = useState("")
-    
+
 
     const checkPass = () => {
         setPass(!pass)
@@ -31,55 +31,55 @@ const Signin = () => {
 
     const [password, setPassword] = useState("")
     const store = useContext(StoreContext)
-    const{setAccount, accountt} = store
-
-    
+    const { setAccount, accountt } = store
 
 
-const handleSubmit = async (e) => {
-            
-            e.preventDefault()
 
-            if(checkPassword){
-                try {
-                    const account = { email, password };
-                    const response = await signin(account);
-                   
-                    localStorage.setItem("tokenBackend", response.data.token);
-                    localStorage.setItem("email", response.data.account.email)
-                    localStorage.setItem('account', JSON.stringify(response.data.account));
 
-                    setAccount(response.data.account)
-                    console.log(accountt)
-                    navigate("/Homepage")
+    const handleSubmit = async (e) => {
 
-                    
-                } catch (err) {
-                    console.error("Signin failed:", err.response?.data || err.message);
-                    setReport(false)
-                    setErrstr(err.response?.data.message)
-                }
-                setCheckPassword(false);
+        e.preventDefault()
+
+        if (checkPassword) {
+            try {
+                const account = { email, password };
+                const response = await signin(account);
+
+                localStorage.setItem("tokenBackend", response.data.token);
+                localStorage.setItem("email", response.data.user.email)
+                localStorage.setItem('account', JSON.stringify(response.data.user));
+
+                setAccount(response.data.user)
+                console.log(response.data.user)
+                navigate("/Homepage")
+
+
+            } catch (err) {
+                console.error("Signin failed:", err.response?.data || err.message);
+                setReport(false)
+                setErrstr(err.response?.data.message)
             }
-        
-            
-        };
-
-        const handleCheckPassword = (e) => {
-            e.preventDefault(); // Thêm dòng này để event được truyền đúng
-            setCheckPassword(true);
-            handleSubmit(e);
-        };
-
-    
+            setCheckPassword(false);
+        }
 
 
-   
+    };
+
+    const handleCheckPassword = (e) => {
+        e.preventDefault(); // Thêm dòng này để event được truyền đúng
+        setCheckPassword(true);
+        handleSubmit(e);
+    };
+
+
+
+
+
     return (
         <>
-          <div className="container">
+            <div className="container">
 
-          <div style={{
+                <div style={{
                     backgroundColor: 'rgba(113, 82, 243, 0.05)',
                     height: '100%',
                     width: '58%',
@@ -99,7 +99,7 @@ const handleSubmit = async (e) => {
                     justifyContent: 'center'
                 }}>
 
-<div style={{
+                    <div style={{
                         display: "flex",
                         alignItems: 'center',
                         marginBottom: '40px',
@@ -107,11 +107,11 @@ const handleSubmit = async (e) => {
                         gap: '10px'
                     }}>
                         <img src={logo} alt="" style={{ width: "50px", height: "50px" }} />
-                        <h1 style={{ fontFamily: 'lexend', fontSize:'30px' }}>HRMS</h1>
+                        <h1 style={{ fontFamily: 'lexend', fontSize: '30px' }}>HRMS</h1>
                     </div>
 
 
-                    
+
                     <p style={{
                         marginBottom: '8px',
                         fontFamily: 'Lexend',
@@ -128,12 +128,12 @@ const handleSubmit = async (e) => {
                         color: 'rgba(162, 161, 168, 1)'
                     }}>Please login here</p>
 
-{report ? <>  
-  <div className="input-container" style={{ marginBottom: '20px' }}>
+                    {report ? <>
+                        <div className="input-container" style={{ marginBottom: '20px' }}>
 
-                        <input  id="email" name="email" type='email' placeholder=" " required className='sign' value={email} onChange={(e) => setMail(e.target.value)} />
-                        <label htmlFor="email" className='title'>Email Address</label>
-                    </div>
+                            <input id="email" name="email" type='email' placeholder=" " required className='sign' value={email} onChange={(e) => setMail(e.target.value)} />
+                            <label htmlFor="email" className='title'>Email Address</label>
+                        </div>
 
                         <div className="input-container" style={{ position: 'relative' }}>
                             <input
@@ -149,7 +149,7 @@ const handleSubmit = async (e) => {
                             {pass ? <FaEye onClick={checkPass} style={{ cursor: 'pointer', position: 'absolute', top: '24px', left: '470px' }} /> : <FaRegEyeSlash onClick={checkPass} style={{ cursor: 'pointer', position: 'absolute', top: '35%', left: '470px' }} />}
                         </div> </> : <>
                         <div className="input-container" style={{ marginBottom: '20px' }}>
-                            <input id="email" type='text' name="email"  className='sign2' value={email} onChange={(e) => setMail(e.target.value)} />
+                            <input id="email" type='text' name="email" className='sign2' value={email} onChange={(e) => setMail(e.target.value)} />
                             <label htmlFor="email" className='title2'>Email Address</label>
                             <p style={{
                                 fontFamily: 'lexend',
@@ -163,12 +163,12 @@ const handleSubmit = async (e) => {
 
                         <div className="input-container" style={{ position: 'relative' }}>
                             <input
-                               type={pass ? "password" : "text"}
-                               id="password"
-                               name="password"
-                               
-                               className='sign2'
-                               value={password} onChange={(e) => setPassword(e.target.value)}
+                                type={pass ? "password" : "text"}
+                                id="password"
+                                name="password"
+
+                                className='sign2'
+                                value={password} onChange={(e) => setPassword(e.target.value)}
                             />
                             <label htmlFor="password" className='title2' >Password</label>
                             {pass ? <FaEye onClick={checkPass} style={{ cursor: 'pointer', position: 'absolute', top: '24px', left: '470px' }} /> : <FaRegEyeSlash onClick={checkPass} style={{ cursor: 'pointer', position: 'absolute', top: '25%', left: '470px' }} />}
@@ -180,20 +180,20 @@ const handleSubmit = async (e) => {
                                 color: 'red'
                             }}>{errstr}Please re-enter</p>
                         </div> </>}
-                        <div style={{
+                    <div style={{
                         display: 'flex',
                         width: '500px',
                         justifyContent: 'space-between',
                         marginTop: '16px'
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <input type="checkbox" className='box' style={{ margin: '0', height: '20px', width: '20px',cursor:'pointer' }} />
+                            <input type="checkbox" className='box' style={{ margin: '0', height: '20px', width: '20px', cursor: 'pointer' }} />
                             <label htmlFor="checkboxLabel" style={{
                                 fontFamily: 'lexend',
                                 fontSize: '16px',
                                 lineHeight: '24px',
                                 fontWeight: '300px',
-                                cursor:'pointer'
+                                cursor: 'pointer'
                             }}>Remember me</label>
                         </div>
                         <p style={{
@@ -208,7 +208,7 @@ const handleSubmit = async (e) => {
                         width: '500px',
                         padding: '20px',
                         marginTop: '30px',
-                        marginBottom:'30px',
+                        marginBottom: '30px',
                         borderRadius: '10px',
                         backgroundColor: 'rgba(113, 82, 243, 1)',
                         color: 'white',
@@ -223,16 +223,16 @@ const handleSubmit = async (e) => {
 
                     }} onClick={handleCheckPassword} >Login</button>
 
-<p style={{
-                            fontSize: '16px',
-                            lineHeight: '24px',
-                            fontWeight: '300px',
-                            fontFamily: 'lexend',
-                            cursor: 'pointer'
-                        }} onClick={() => { navigate("/signup") }}>Don't have an account ?</p>
+                    <p style={{
+                        fontSize: '16px',
+                        lineHeight: '24px',
+                        fontWeight: '300px',
+                        fontFamily: 'lexend',
+                        cursor: 'pointer'
+                    }} onClick={() => { navigate("/signup") }}>Don't have an account ?</p>
 
                 </div>
-          </div>
+            </div>
         </>
     );
 };

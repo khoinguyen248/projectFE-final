@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react'
-import { CiSearch } from "react-icons/ci";
-import { CiBellOn } from "react-icons/ci";
+import React, { useEffect, useState } from 'react'
+import { CiSearch, CiBellOn } from "react-icons/ci";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaPenToSquare } from "react-icons/fa6";
 import { IoBriefcase } from "react-icons/io5";
 import { FaMapMarkerAlt } from "react-icons/fa";
-
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { VscSettings } from "react-icons/vsc";
-import { useContext } from 'react';
-import { StoreContext } from '../../store';
-
-import { useState } from 'react';
+import { jobs, createJob } from '../../api';
 import { Modal3 } from '../../Modal3';
-import { jobs } from '../../api';
 
 const Jobs = () => {
 
@@ -26,16 +19,38 @@ const Jobs = () => {
         try {
             setCheck(true)
             const respone = await jobs()
+            const data = respone.data.data
 
-            const data = await respone.data.data
-            setArr(data)
+            // Transform data to match UI structure
+            // Group by status
+            const activeJobs = data.filter(j => j.status !== 'Completed').map(mapJob);
+            const finishedJobs = data.filter(j => j.status === 'Completed').map(mapJob);
+
+            const grouped = [
+                { id: 1, type: 'Active Jobs', jobs: activeJobs },
+                { id: 2, type: 'Finished Jobs', jobs: finishedJobs }
+            ];
+
+            setArr(grouped)
             setCheck(false)
         }
-        catch {
-            console.log('error')
+        catch (error) {
+            console.log('error fetching jobs', error)
+            setCheck(false)
         }
 
     }
+
+    const mapJob = (j) => ({
+        id: j._id,
+        name: j.jobName,
+        spec: j.description,
+        time: new Date(j.deadline).toLocaleDateString(),
+        place: 'Remote', // Hardcoded as backend doesn't have it
+        location: 'Vietnam', // Hardcoded
+        pricetag: 'Negotiable', // Hardcoded
+        status: j.status
+    });
 
     useEffect(() => {
         fetchOne()
@@ -143,71 +158,67 @@ const Jobs = () => {
                             display: 'flex',
                             margin: 'auto',
                             justifyContent: 'space-between',
+                            flexWrap: 'wrap'
 
                         }}>
 
                             {check && <p style={{ margin: 'auto', color: 'rgba(162, 161, 168, 1)', marginBottom: '20px' }}>please wait</p>}
                             {!check && arr?.map(item => {
-                                return <>
-                                    <>
-                                        <div style={{
-                                            width: '28.5%',
-                                            height: 'fit-content',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            gap: '20px',
-                                            border: '1px solid rgba(162, 161, 168, 0.2)', marginBottom: '20px', borderRadius: '10px', paddingTop: '20px', paddingBottom: '20px', marginTop: '20px'
-                                        }} key={item.id}>
-                                            <div style={{ display: 'flex', alignItems: 'center', width: '80%', margin: 'auto', gap: '3px' }}>
-                                                <div style={{
-                                                    backgroundColor: `${item.type == 'Active Jobs' ? 'yellow' : item.type == 'Finished Jobs' ? 'red' : 'green'}`,
-                                                    height: "8px",
-                                                    width: "8px",
-                                                    borderRadius: '50%'
-                                                }}></div>
-                                                <p >{item.type}</p>
-                                            </div>
+                                return (
+                                    <div style={{
+                                        width: '48%', // Adjusted for better fit
+                                        height: 'fit-content',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: '20px',
+                                        border: '1px solid rgba(162, 161, 168, 0.2)', marginBottom: '20px', borderRadius: '10px', paddingTop: '20px', paddingBottom: '20px', marginTop: '20px'
+                                    }} key={item.id}>
+                                        <div style={{ display: 'flex', alignItems: 'center', width: '80%', margin: 'auto', gap: '3px' }}>
+                                            <div style={{
+                                                backgroundColor: `${item.type == 'Active Jobs' ? 'yellow' : item.type == 'Finished Jobs' ? 'red' : 'green'}`,
+                                                height: "8px",
+                                                width: "8px",
+                                                borderRadius: '50%'
+                                            }}></div>
+                                            <p >{item.type}</p>
+                                        </div>
 
-                                            {item?.jobs?.map(item1 => {
-                                                return <>
+                                        {item?.jobs?.map(item1 => {
+                                            return (
 
-                                                    <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px', width: '90%', margin: 'auto', borderRadius: '10px', backgroundColor: 'rgba(162, 161, 168, 0.05)', padding: '10px', alignItems: 'center', gap: '16px' }}>
-                                                        <div style={{ display: 'flex', gap: '12px', width: '95%' }}>
+                                                <div key={item1.id} style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px', width: '90%', margin: 'auto', borderRadius: '10px', backgroundColor: 'rgba(162, 161, 168, 0.05)', padding: '10px', alignItems: 'center', gap: '16px' }}>
+                                                    <div style={{ display: 'flex', gap: '12px', width: '95%' }}>
 
-                                                            <div style={{ backgroundColor: 'rgba(162, 161, 168, 0.1)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: "center", height: '45px', width: '45px' }}><IoBriefcase size={20} /></div>
-
-
-                                                            <div style={{ display: 'flex', flexDirection: 'column', height: '45px', justifyContent: 'space-between' }}> <p style={{ fontSize: '16px', fontWeight: "600" }}>{item1.name}</p>
-                                                                <p style={{ fontSize: '14px', fontWeight: "300", color: "rgba(162, 161, 168, 1)" }}>{item1.spec}</p></div>
-
-                                                        </div>
+                                                        <div style={{ backgroundColor: 'rgba(162, 161, 168, 0.1)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: "center", height: '45px', width: '45px' }}><IoBriefcase size={20} /></div>
 
 
-
-                                                        <div style={{ display: 'flex', width: '95%', gap: '8px' }}>
-                                                            <p style={{ fontSize: '12px', padding: '10px', display: 'flex', alignItems: 'center', borderRadius: '5px', backgroundColor: 'rgba(113, 82, 243, 1)', color: 'white', fontWeight: '300' }}>{item1.spec}</p>
-                                                            <p style={{ fontSize: '12px', padding: '10px', display: 'flex', alignItems: 'center', borderRadius: '5px', backgroundColor: 'rgba(113, 82, 243, 1)', color: 'white', fontWeight: '300' }}>{item1.time}</p>
-                                                            <p style={{ fontSize: '12px', padding: '10px', display: 'flex', alignItems: 'center', borderRadius: '5px', backgroundColor: 'rgba(113, 82, 243, 1)', color: 'white', fontWeight: '300' }}>{item1.place}</p>
-                                                        </div>
-
-                                                        <div style={{ display: 'flex', width: '95%', justifyContent: 'space-between', alignItems: 'center' }}>
-
-                                                            <p><FaMapMarkerAlt />{item1.location}</p>
-
-                                                            <p>{item1.pricetag}$/Month</p>
-                                                        </div>
+                                                        <div style={{ display: 'flex', flexDirection: 'column', height: '45px', justifyContent: 'space-between' }}> <p style={{ fontSize: '16px', fontWeight: "600" }}>{item1.name}</p>
+                                                            <p style={{ fontSize: '14px', fontWeight: "300", color: "rgba(162, 161, 168, 1)" }}>{item1.spec}</p></div>
 
                                                     </div>
 
-                                                </>
-
-                                            })}
-                                        </div>
-
-                                    </>
 
 
-                                </>
+                                                    <div style={{ display: 'flex', width: '95%', gap: '8px' }}>
+                                                        <p style={{ fontSize: '12px', padding: '10px', display: 'flex', alignItems: 'center', borderRadius: '5px', backgroundColor: 'rgba(113, 82, 243, 1)', color: 'white', fontWeight: '300' }}>{item1.status}</p>
+                                                        <p style={{ fontSize: '12px', padding: '10px', display: 'flex', alignItems: 'center', borderRadius: '5px', backgroundColor: 'rgba(113, 82, 243, 1)', color: 'white', fontWeight: '300' }}>{item1.time}</p>
+                                                        <p style={{ fontSize: '12px', padding: '10px', display: 'flex', alignItems: 'center', borderRadius: '5px', backgroundColor: 'rgba(113, 82, 243, 1)', color: 'white', fontWeight: '300' }}>{item1.place}</p>
+                                                    </div>
+
+                                                    <div style={{ display: 'flex', width: '95%', justifyContent: 'space-between', alignItems: 'center' }}>
+
+                                                        <p><FaMapMarkerAlt />{item1.location}</p>
+
+                                                        <p>{item1.pricetag}</p>
+                                                    </div>
+
+                                                </div>
+
+                                            )
+
+                                        })}
+                                    </div>
+                                )
 
                             })}
                         </div>
@@ -220,7 +231,7 @@ const Jobs = () => {
                 </div>
             </div>
 
-            {toogle && arr?.length > 0 && <Modal3 toogle={setToogle} setArr={setArr} arr={arr} />}
+            {toogle && <Modal3 toogle={setToogle} setArr={setArr} arr={arr} />}
         </>
     )
 }

@@ -7,15 +7,13 @@ export const Modal2 = ({ setHooks, user, fetchOne }) => {
 
 
     const store = useContext(StoreContext)
-    const {accountt} = store
+    const { accountt } = store
     const handleDeleteProduct = async () => {
-    
+
         try {
-          const deleteItem = {email: accountt?.email, role: accountt?.role, name: user?.name, employeeEmail: user?.email}
-          console.log(deleteItem) 
-          await deleteUser(deleteItem)
+            await deleteUser(user._id)
         } catch (error) {
-     console.error('delete error', error.response?.status, error.response?.data || error.message);
+            console.error('delete error', error.response?.status, error.response?.data || error.message);
 
         }
     };
@@ -36,20 +34,20 @@ export const Modal2 = ({ setHooks, user, fetchOne }) => {
 
                 <p style={{ fontFamily: 'lexend', fontSize: '16px', fontWeight: '300', lineHeight: '24px', color: 'rgba(162, 161, 168, 1)' }}>Please confirm your request</p>
 
-                <div style={{display:'flex', width:'80%', justifyContent:'space-between', margin:'auto'}}>
-                <button style={{
-                    padding: '20px', width: '40%', margin: 'auto', border: 'none', borderRadius: '10px', backgroundColor: 'red', fontFamily: 'lexend', fontSize: '16px', fontWeight: '300', lineHeight: '24px', color: 'yellow', cursor: 'pointer', display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }} onClick={() => handleDeleteProduct()}>Yes</button>
+                <div style={{ display: 'flex', width: '80%', justifyContent: 'space-between', margin: 'auto' }}>
+                    <button style={{
+                        padding: '20px', width: '40%', margin: 'auto', border: 'none', borderRadius: '10px', backgroundColor: 'red', fontFamily: 'lexend', fontSize: '16px', fontWeight: '300', lineHeight: '24px', color: 'yellow', cursor: 'pointer', display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }} onClick={() => handleDeleteProduct()}>Yes</button>
 
-                <button style={{
-                    padding: '20px', width: '40%', margin: 'auto', border: 'none', borderRadius: '10px', backgroundColor: 'rgba(113, 82, 243, 1)', fontFamily: 'lexend', fontSize: '16px', fontWeight: '300', lineHeight: '24px', color: 'white', cursor: 'pointer', display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }} onClick={() => setHooks(false)}>No</button>
+                    <button style={{
+                        padding: '20px', width: '40%', margin: 'auto', border: 'none', borderRadius: '10px', backgroundColor: 'rgba(113, 82, 243, 1)', fontFamily: 'lexend', fontSize: '16px', fontWeight: '300', lineHeight: '24px', color: 'white', cursor: 'pointer', display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }} onClick={() => setHooks(false)}>No</button>
                 </div>
-               
+
             </div>
         </div>
     )

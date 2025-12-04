@@ -9,6 +9,11 @@ import Payroll from './Payroll';
 import AllEmployee from './AllEmployeeTest';
 import Candidates from '../Candidates/Candidates';
 import Jobs from './Jobs';
+import Schedule from '../Schedule';
+import Notification from '../Notification';
+import Predict from '../Predict';
+import Salary from '../Salary';
+import Timesheet from '../Timesheet';
 
 export const Mainpath = () => {
   const store = useContext(StoreContext)
@@ -38,6 +43,11 @@ export const Mainpath = () => {
         {userId === "Dashboard" && <img style={{ height: '400px', marginRight: '800px', marginTop: '50px' }} src='https://static.vecteezy.com/system/resources/previews/027/769/355/non_2x/update-icon-upgrade-system-sign-installing-software-gear-settings-application-update-process-completed-refresh-button-update-status-symbol-updating-system-software-illustration-vector.jpg'></img>}
         {userId === "Leave" && <img style={{ height: '400px', marginRight: '800px', marginTop: '50px' }} src='https://static.vecteezy.com/system/resources/previews/027/769/355/non_2x/update-icon-upgrade-system-sign-installing-software-gear-settings-application-update-process-completed-refresh-button-update-status-symbol-updating-system-software-illustration-vector.jpg'></img>}
         {userId === "Holiday" && <img style={{ height: '400px', marginRight: '800px', marginTop: '50px' }} src='https://static.vecteezy.com/system/resources/previews/027/769/355/non_2x/update-icon-upgrade-system-sign-installing-software-gear-settings-application-update-process-completed-refresh-button-update-status-symbol-updating-system-software-illustration-vector.jpg'></img>}
+        {userId === "Salary" && <Salary />}
+        {userId === "Timesheet" && <Timesheet />}
+        {userId === "Schedule" && <Schedule />}
+        {userId === "Notification" && <Notification />}
+        {userId === "Predict" && <Predict />}
 
 
 
