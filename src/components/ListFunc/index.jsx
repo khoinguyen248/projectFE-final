@@ -16,48 +16,47 @@ import { MdAccessTime } from "react-icons/md";
 import { IoCalendarOutline } from "react-icons/io5";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { IoStatsChartOutline } from "react-icons/io5";
+import { IoPersonCircleOutline } from "react-icons/io5";
+import { MdWorkOutline } from "react-icons/md";
 
 import { StoreContext } from '../../store';
-
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 export const Button = () => {
-
-
-
-
     const navigate = useNavigate()
     const { userId } = useParams()
     const store = useContext(StoreContext)
-    const { currentPage, setCurrentPage } = store
+    const { currentPage, setCurrentPage, accountt } = store
+    const [userRole, setUserRole] = useState('')
 
+    useEffect(() => {
+        if (accountt && accountt.role) {
+            setUserRole(accountt.role);
+        } else {
+            const storedAccount = localStorage.getItem('account');
+            if (storedAccount) {
+                const account = JSON.parse(storedAccount);
+                setUserRole(account.role || '');
+            }
+        }
+    }, [accountt]);
 
     const handleCheckbut = (int) => {
-
         navigate(`/Homepage/${int}`)
-
-
     };
 
     useEffect(() => {
         setCurrentPage(localStorage.getItem('tokenBackend'))
-    },
-        [])
-
-
+    }, [])
 
     return (
         <>
-
             {
                 currentPage ? <div style={{
                     width: '1500px',
                     display: 'flex',
                     justifyContent: 'space-between'
-
                 }}>
-
-
                     <div className="parent">
                         <div className='menu'>
                             <div onClick={() => navigate(`/Homepage`)} style={{
@@ -72,23 +71,35 @@ export const Button = () => {
                             </div>
                             <button className={userId === "Dashboard" ? 'selected' : ''} onClick={() => handleCheckbut("Dashboard")}><RxDashboard />Dashboard</button>
                             <button className={userId === "Allemployee" ? 'selected' : ''} onClick={() => handleCheckbut("Allemployee")}><BsPersonLinesFill />All employees</button>
-                            <button className={userId === "AllDepartments" ? 'selected' : ''} onClick={() => handleCheckbut("AllDepartments")}><MdOutlineLocalFireDepartment />All departments</button>
-                            <button className={userId === "Attendance" ? 'selected' : ''} onClick={() => handleCheckbut("Attendance")}><GrSchedules />Attendance</button>
-                            <button className={userId === "Payroll" ? 'selected' : ''} onClick={() => handleCheckbut("Payroll")}><CiDollar />Payroll</button>
-                            <button className={userId === "Jobs" ? 'selected' : ''} onClick={() => handleCheckbut("Jobs")}><RxBackpack />Jobs</button>
-                            <button className={userId === "Candidates" ? 'selected' : ''} onClick={() => handleCheckbut("Candidates")}><IoPersonAddOutline />Candidates</button>
+
+                            {(userRole === 'Admin' || userRole === 'Manager') && (
+                                <>
+                                    <button className={userId === "AllDepartments" ? 'selected' : ''} onClick={() => handleCheckbut("AllDepartments")}><MdOutlineLocalFireDepartment />All departments</button>
+                                    <button className={userId === "Attendance" ? 'selected' : ''} onClick={() => handleCheckbut("Attendance")}><GrSchedules />Attendance</button>
+                                    <button className={userId === "Payroll" ? 'selected' : ''} onClick={() => handleCheckbut("Payroll")}><CiDollar />Payroll</button>
+                                    <button className={userId === "Jobs" ? 'selected' : ''} onClick={() => handleCheckbut("Jobs")}><RxBackpack />Jobs</button>
+                                    <button className={userId === "Candidates" ? 'selected' : ''} onClick={() => handleCheckbut("Candidates")}><IoPersonAddOutline />Candidates</button>
+                                </>
+                            )}
+
+                            {userRole === 'Employee' && (
+                                <button className={userId === "EmployeeJobs" ? 'selected' : ''} onClick={() => handleCheckbut("EmployeeJobs")}><MdWorkOutline />My Jobs</button>
+                            )}
 
                             <button className={userId === "Salary" ? 'selected' : ''} onClick={() => handleCheckbut("Salary")}><MdAttachMoney />Salary</button>
                             <button className={userId === "Timesheet" ? 'selected' : ''} onClick={() => handleCheckbut("Timesheet")}><MdAccessTime />Timesheet</button>
                             <button className={userId === "Schedule" ? 'selected' : ''} onClick={() => handleCheckbut("Schedule")}><IoCalendarOutline />Schedule</button>
                             <button className={userId === "Notification" ? 'selected' : ''} onClick={() => handleCheckbut("Notification")}><IoNotificationsOutline />Notification</button>
-                            <button className={userId === "Predict" ? 'selected' : ''} onClick={() => handleCheckbut("Predict")}><IoStatsChartOutline />Predict</button>
-                        </div>
 
+                            {(userRole === 'Admin' || userRole === 'Manager') && (
+                                <button className={userId === "Predict" ? 'selected' : ''} onClick={() => handleCheckbut("Predict")}><IoStatsChartOutline />Predict</button>
+                            )}
+
+                            <button className={userId === "Profile" ? 'selected' : ''} onClick={() => handleCheckbut("Profile")}><IoPersonCircleOutline />Profile</button>
+                        </div>
                     </div>
 
                     {!userId && <div style={{ width: '82%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', }}>
-
                         <p style={{
                             marginBottom: '8px',
                             fontFamily: 'Lexend',
@@ -104,7 +115,6 @@ export const Button = () => {
                             fontWeight: '300px',
                             color: 'rgba(162, 161, 168, 1)'
                         }}>Let's get started</p>
-
                     </div>}
 
                     <Outlet />
@@ -112,19 +122,6 @@ export const Button = () => {
                     <p>HEM VÔ ĐƯỢC NHE</p>
                 </>
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
         </>
     );
 };

@@ -14,6 +14,8 @@ import Notification from '../Notification';
 import Predict from '../Predict';
 import Salary from '../Salary';
 import Timesheet from '../Timesheet';
+import Profile from '../Profile';
+import EmployeeJobs from '../EmployeeJobs';
 
 export const Mainpath = () => {
   const store = useContext(StoreContext)
@@ -48,6 +50,8 @@ export const Mainpath = () => {
         {userId === "Schedule" && <Schedule />}
         {userId === "Notification" && <Notification />}
         {userId === "Predict" && <Predict />}
+        {userId === "Profile" && <Profile />}
+        {userId === "EmployeeJobs" && <EmployeeJobs />}
 
 
 
