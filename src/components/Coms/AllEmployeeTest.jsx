@@ -4,6 +4,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaPenToSquare } from "react-icons/fa6";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { MdWork, MdAttachMoney, MdLogin, MdLogout } from "react-icons/md";
 import { StoreContext } from '../../store';
 import { getAllemloyees, getMonthlyReport, getSalary, deleteUser, predictChurn, checkIn, checkOut, createJob, upsertSalary } from '../../api';
 import './Allemployee.css'
@@ -226,7 +227,7 @@ const AllEmployee = () => {
               )}
             </div>
 
-            <div className="boxcontent">
+            <div className="boxcontent" style={{ overflowX: 'auto' }}>
               <div className='boxcontent-1' style={{
                 fontSize: '14px',
                 fontWeight: '300',
@@ -234,15 +235,15 @@ const AllEmployee = () => {
                 color: 'rgba(162, 161, 168, 1)',
                 display: 'grid',
                 gridTemplateColumns: isAdmin
-                  ? '150px 180px 120px 100px 120px 100px 100px 100px 200px'
-                  : '200px 200px 150px 120px 100px 120px',
-                gap: '10px'
+                  ? '120px 150px 100px 100px 90px 90px 90px 240px'
+                  : '150px 180px 120px 100px 90px 100px',
+                gap: '10px',
+                minWidth: 'max-content'
               }}>
                 <p>Name</p>
                 <p>Email</p>
                 <p>Role</p>
                 <p>Department</p>
-                <p>Phone</p>
                 <p>Status</p>
                 <p>Hours (Month)</p>
                 <p>Salary</p>
@@ -257,12 +258,12 @@ const AllEmployee = () => {
                     alignItems: 'center',
                     display: 'grid',
                     gridTemplateColumns: isAdmin
-                      ? '150px 180px 120px 100px 120px 100px 100px 100px 200px'
-                      : '200px 200px 150px 120px 100px 120px',
+                      ? '120px 150px 100px 100px 90px 90px 90px 240px'
+                      : '150px 180px 120px 100px 90px 100px',
                     gap: '10px'
                   }}>
                     <p style={{ fontSize: '14px', fontWeight: '500' }}>{emp.fname} {emp.lname}</p>
-                    <p style={{ fontSize: '13px' }}>{emp.email}</p>
+                    <p style={{ fontSize: '13px', wordBreak: 'break-word', maxWidth: '150px' }}>{emp.email}</p>
                     <p>
                       <span style={{
                         padding: '4px 8px',
@@ -273,7 +274,6 @@ const AllEmployee = () => {
                       }}>{emp.role}</span>
                     </p>
                     <p style={{ fontSize: '13px' }}>{emp.department || 'N/A'}</p>
-                    <p style={{ fontSize: '13px' }}>{emp.phone || 'N/A'}</p>
                     <p>
                       <span style={{
                         padding: '4px 8px',
@@ -296,52 +296,42 @@ const AllEmployee = () => {
                       }}>View</button>
                     </p>
                     {isAdmin && (
-                      <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                         <button onClick={() => { setSelectedEmployee(emp); setShowJobModal(true); }} style={{
-                          padding: '4px 8px',
-                          backgroundColor: 'rgba(113, 82, 243, 1)',
-                          color: 'white',
+                          background: 'none',
                           border: 'none',
-                          borderRadius: '4px',
                           cursor: 'pointer',
-                          fontSize: '11px'
-                        }}>Job</button>
+                          color: 'rgba(113, 82, 243, 1)',
+                          padding: '4px'
+                        }} title="Assign Job"><MdWork size={18} /></button>
                         <button onClick={() => { setSelectedEmployee(emp); setShowSalarySetModal(true); }} style={{
-                          padding: '4px 8px',
-                          backgroundColor: 'rgba(63, 194, 138, 1)',
-                          color: 'white',
+                          background: 'none',
                           border: 'none',
-                          borderRadius: '4px',
                           cursor: 'pointer',
-                          fontSize: '11px'
-                        }}>Salary</button>
+                          color: 'rgba(63, 194, 138, 1)',
+                          padding: '4px'
+                        }} title="Set Salary"><MdAttachMoney size={18} /></button>
                         <button onClick={() => handleCheckIn(emp._id)} style={{
-                          padding: '4px 8px',
-                          backgroundColor: 'rgba(239, 190, 18, 1)',
-                          color: 'white',
+                          background: 'none',
                           border: 'none',
-                          borderRadius: '4px',
                           cursor: 'pointer',
-                          fontSize: '11px'
-                        }}>In</button>
+                          color: 'rgba(239, 190, 18, 1)',
+                          padding: '4px'
+                        }} title="Check In"><MdLogin size={18} /></button>
                         <button onClick={() => handleCheckOut(emp._id)} style={{
-                          padding: '4px 8px',
-                          backgroundColor: 'rgba(244, 91, 105, 1)',
-                          color: 'white',
+                          background: 'none',
                           border: 'none',
-                          borderRadius: '4px',
                           cursor: 'pointer',
-                          fontSize: '11px'
-                        }}>Out</button>
+                          color: 'rgba(244, 91, 105, 1)',
+                          padding: '4px'
+                        }} title="Check Out"><MdLogout size={18} /></button>
                         <button onClick={() => handleDelete(emp._id)} style={{
-                          padding: '4px 8px',
-                          backgroundColor: 'red',
-                          color: 'white',
+                          background: 'none',
                           border: 'none',
-                          borderRadius: '4px',
                           cursor: 'pointer',
-                          fontSize: '11px'
-                        }}><FaRegTrashAlt /></button>
+                          color: 'red',
+                          padding: '4px'
+                        }} title="Delete"><FaRegTrashAlt size={16} /></button>
                         {employeeData[emp._id]?.churnRisk && (
                           <span style={{
                             padding: '4px 8px',

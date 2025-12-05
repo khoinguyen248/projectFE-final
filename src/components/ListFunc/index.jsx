@@ -69,11 +69,11 @@ export const Button = () => {
                                 <img src={logo} alt="" style={{ width: "40px", height: "40px" }} />
                                 <p style={{ fontFamily: 'lexend', fontSize: '24px' }}>HRSM</p>
                             </div>
-                            <button className={userId === "Dashboard" ? 'selected' : ''} onClick={() => handleCheckbut("Dashboard")}><RxDashboard />Dashboard</button>
-                            <button className={userId === "Allemployee" ? 'selected' : ''} onClick={() => handleCheckbut("Allemployee")}><BsPersonLinesFill />All employees</button>
-
+                           
                             {(userRole === 'Admin' || userRole === 'Manager') && (
                                 <>
+                            <button className={userId === "Allemployee" ? 'selected' : ''} onClick={() => handleCheckbut("Allemployee")}><BsPersonLinesFill />All employees</button>
+
                                     <button className={userId === "AllDepartments" ? 'selected' : ''} onClick={() => handleCheckbut("AllDepartments")}><MdOutlineLocalFireDepartment />All departments</button>
                                     <button className={userId === "Attendance" ? 'selected' : ''} onClick={() => handleCheckbut("Attendance")}><GrSchedules />Attendance</button>
                                     <button className={userId === "Payroll" ? 'selected' : ''} onClick={() => handleCheckbut("Payroll")}><CiDollar />Payroll</button>
