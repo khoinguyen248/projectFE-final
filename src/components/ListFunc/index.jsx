@@ -74,11 +74,9 @@ export const Button = () => {
                                 <>
                             <button className={userId === "Allemployee" ? 'selected' : ''} onClick={() => handleCheckbut("Allemployee")}><BsPersonLinesFill />All employees</button>
 
-                                    <button className={userId === "AllDepartments" ? 'selected' : ''} onClick={() => handleCheckbut("AllDepartments")}><MdOutlineLocalFireDepartment />All departments</button>
                                     <button className={userId === "Attendance" ? 'selected' : ''} onClick={() => handleCheckbut("Attendance")}><GrSchedules />Attendance</button>
                                     <button className={userId === "Payroll" ? 'selected' : ''} onClick={() => handleCheckbut("Payroll")}><CiDollar />Payroll</button>
                                     <button className={userId === "Jobs" ? 'selected' : ''} onClick={() => handleCheckbut("Jobs")}><RxBackpack />Jobs</button>
-                                    <button className={userId === "Candidates" ? 'selected' : ''} onClick={() => handleCheckbut("Candidates")}><IoPersonAddOutline />Candidates</button>
                                 </>
                             )}
 
